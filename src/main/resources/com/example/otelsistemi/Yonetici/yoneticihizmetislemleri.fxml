@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.Controllers.Yonetici.YoneticiHizmetIslemleriController"
+            prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: white;">
+
+    <SplitPane dividerPositions="0.4" AnchorPane.topAnchor="0.0" 
+               AnchorPane.bottomAnchor="0.0" 
+               AnchorPane.leftAnchor="0.0" 
+               AnchorPane.rightAnchor="0.0"
+               style="-fx-background-color: transparent; -fx-box-border: transparent;">
+        
+        <!-- Sol Panel - Form -->
+        <VBox spacing="15" style="-fx-padding: 20; -fx-background-color: white;">
+            <Label text="Hizmet Bilgileri" 
+                   style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2c3e50;
+                          -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);"/>
+            
+            <GridPane hgap="15" vgap="10" 
+                     style="-fx-background-color: #f8f9fa; -fx-padding: 20; 
+                            -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="90" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+                
+                <Label text="Hizmet Adı:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;" 
+                       GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtHizmetAdi" promptText="Hizmet adını giriniz"
+                          style="-fx-background-radius: 5; -fx-border-radius: 5;"
+                          GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                
+                <Label text="Açıklama:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                       GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextArea fx:id="txtAciklama" promptText="Hizmet açıklamasını giriniz" 
+                         prefRowCount="3" wrapText="true"
+                         style="-fx-background-radius: 5; -fx-border-radius: 5;"
+                         GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                
+                <Label text="Fiyat:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                       GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtFiyat" promptText="Fiyat giriniz"
+                          style="-fx-background-radius: 5; -fx-border-radius: 5;"
+                          GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                
+                <Label text="Durum:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                       GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <CheckBox fx:id="chkAktif" text="Aktif" selected="true"
+                         style="-fx-text-fill: #34495e;"
+                         GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            </GridPane>
+            
+            <VBox spacing="10">
+                <Button fx:id="btnEkle" text="Ekle" onAction="#hizmetEkle"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-cursor: hand;" maxWidth="Infinity"/>
+                <Button fx:id="btnGuncelle" text="Güncelle" onAction="#hizmetGuncelle"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-cursor: hand;" maxWidth="Infinity"/>
+                <Button fx:id="btnSil" text="Sil" onAction="#hizmetSil"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-cursor: hand;" maxWidth="Infinity"/>
+                <Button fx:id="btnTemizle" text="Temizle" onAction="#formuTemizle"
+                        style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-cursor: hand;" maxWidth="Infinity"/>
+            </VBox>
+            
+            <Label fx:id="lblMesaj" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" wrapText="true"/>
+            
+            <Region VBox.vgrow="ALWAYS"/>
+            
+            <Button fx:id="btnGeriDon" text="Geri Dön" onAction="#geriDon"
+                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; 
+                           -fx-background-radius: 5; -fx-cursor: hand;" maxWidth="Infinity"/>
+        </VBox>
+        
+        <!-- Sağ Panel - Tablo -->
+        <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: white;">
+            <Label text="Hizmet Listesi" 
+                   style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2c3e50;
+                          -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);"/>
+            
+            <TableView fx:id="tblHizmetler" VBox.vgrow="ALWAYS" 
+                      style="-fx-background-radius: 10; -fx-border-radius: 10;
+                             -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+                <columns>
+                    <TableColumn fx:id="colHizmetAdi" text="Hizmet Adı" prefWidth="150"/>
+                    <TableColumn fx:id="colAciklama" text="Açıklama" prefWidth="200"/>
+                    <TableColumn fx:id="colFiyat" text="Fiyat" prefWidth="100"/>
+                    <TableColumn fx:id="colDurum" text="Durum" prefWidth="80"/>
+                </columns>
+                <style>
+                    -fx-selection-bar: #3498db;
+                    -fx-selection-bar-non-focused: #bdc3c7;
+                </style>
+            </TableView>
+        </VBox>
+        
+    </SplitPane>
+</AnchorPane> 

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.example.Controllers.Musteri.MusteriMevcutRezervasyonlarController">
+    <BorderPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: white;" 
+                AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        
+        <!-- Üst Başlık -->
+        <top>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="800.0" 
+                   style="-fx-background-color: #2c3e50; -fx-text-fill: white; -fx-font-size: 24px;" 
+                   text="MEVCUT REZERVASYONLARIM"/>
+        </top>
+
+        <!-- Sol Panel - Hizmet Talebi -->
+        <left>
+            <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="10" 
+                  style="-fx-background-color: #34495e; -fx-padding: 20;">
+                
+                <Label text="HİZMET TALEBİ" 
+                       style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                
+                <Label text="Talep Durumu:" 
+                       style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+                <Label fx:id="lblTalepDurumu" text="-" 
+                       style="-fx-text-fill: white;"/>
+                
+                <Label text="Hizmetler:" 
+                       style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+                <ComboBox fx:id="cmbHizmetler" prefWidth="250"/>
+                
+                <Label text="Açıklama:" 
+                       style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+                <TextArea fx:id="txtAciklama" prefHeight="100" wrapText="true"
+                         style="-fx-control-inner-background: #455a64; -fx-text-fill: white;"/>
+                
+                <Label text="Hizmet Ücreti:" 
+                       style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+                <Label fx:id="lblHizmetUcreti" text="-" 
+                       style="-fx-text-fill: white;"/>
+                
+                <Label text="Hizmet Detayı:" 
+                       style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+                <Label fx:id="lblHizmetDetay" text="-" wrapText="true"
+                       style="-fx-text-fill: white;"/>
+                
+                <Label fx:id="lblMevcutBakiye" 
+                       style="-fx-font-size: 14px; -fx-font-weight: bold;"
+                       text="Mevcut Bakiye: 0.00 TL"/>
+                
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="btnTalepOlustur" text="Talep Oluştur" onAction="#hizmetTalebiOlustur"
+                            style="-fx-background-color: #27ae60; -fx-text-fill: white;"/>
+                    <Button fx:id="btnTalepGuncelle" text="Güncelle" onAction="#hizmetTalebiGuncelle"
+                            style="-fx-background-color: #f39c12; -fx-text-fill: white;"/>
+                    <Button fx:id="btnTalepSil" text="Sil" onAction="#hizmetTalebiSil"
+                            style="-fx-background-color: #c0392b; -fx-text-fill: white;"/>
+                </HBox>
+                
+                <Label fx:id="lblMesaj" wrapText="true" textAlignment="CENTER"
+                       style="-fx-text-fill: white;"/>
+                
+                <Region VBox.vgrow="ALWAYS"/>
+                
+                <Button fx:id="btnGeriDon" text="Geri Dön" onAction="#geriDon"
+                        style="-fx-background-color: #2c3e50; -fx-text-fill: white;"
+                        prefWidth="250"/>
+            </VBox>
+        </left>
+        
+        <!-- Sağ Panel - Rezervasyonlar Tablosu -->
+        <center>
+            <VBox alignment="TOP_CENTER" style="-fx-background-color: white; -fx-padding: 20;">
+                <TableView fx:id="tblRezervasyonlar" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colOdaNo" text="Oda No" prefWidth="80"/>
+                        <TableColumn fx:id="colOdaAdi" text="Oda Adı" prefWidth="120"/>
+                        <TableColumn fx:id="colOdaTipi" text="Oda Tipi" prefWidth="120"/>
+                        <TableColumn fx:id="colBaslangicTarihi" text="Giriş Tarihi" prefWidth="120"/>
+                        <TableColumn fx:id="colBitisTarihi" text="Çıkış Tarihi" prefWidth="120"/>
+                        <TableColumn fx:id="colDurum" text="Durum" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </center>
+        
+    </BorderPane>
+</AnchorPane> 

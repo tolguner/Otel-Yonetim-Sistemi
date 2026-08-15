@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.example.Controllers.Yonetici.YoneticiHizmetTalebiController">
+    
+    <!-- Sol Panel - Talep Detayları -->
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #34495e; -fx-padding: 20;" prefWidth="300">
+            <Label text="HİZMET TALEBİ DETAYI" style="-fx-font-size: 18; -fx-text-fill: white;"/>
+            
+            <Label text="Oda No:" style="-fx-text-fill: white;"/>
+            <Label fx:id="lblOdaNo" style="-fx-text-fill: white;"/>
+            
+            <Label text="Hizmet:" style="-fx-text-fill: white;"/>
+            <Label fx:id="lblHizmet" style="-fx-text-fill: white;"/>
+            
+            <Label text="Açıklama:" style="-fx-text-fill: white;"/>
+            <Label fx:id="lblAciklama" style="-fx-text-fill: white;" wrapText="true"/>
+            
+            <Label text="Talep Tarihi:" style="-fx-text-fill: white;"/>
+            <Label fx:id="lblTalepTarihi" style="-fx-text-fill: white;"/>
+            
+            <Label text="Durum:" style="-fx-text-fill: white;"/>
+            <ComboBox fx:id="cmbDurum" prefWidth="250"/>
+            
+            <Button text="Durumu Güncelle" onAction="#durumGuncelle" 
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white;"/>
+            
+            <Region VBox.vgrow="ALWAYS"/>
+            
+            <Button fx:id="btnGeriDon" text="Geri Dön" onAction="#geriDon"
+                    style="-fx-background-color: #2c3e50; -fx-text-fill: white;"/>
+        </VBox>
+    </left>
+    
+    <!-- Sağ Panel - Talepler Tablosu -->
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <Label text="HİZMET TALEPLERİ" style="-fx-font-size: 24;"/>
+            
+            <TableView fx:id="tblTalepler" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colOdaNo" text="Oda No" prefWidth="80"/>
+                    <TableColumn fx:id="colHizmet" text="Hizmet" prefWidth="120"/>
+                    <TableColumn fx:id="colAciklama" text="Açıklama" prefWidth="200"/>
+                    <TableColumn fx:id="colTarih" text="Talep Tarihi" prefWidth="150"/>
+                    <TableColumn fx:id="colDurum" text="Durum" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+    
+</BorderPane> 

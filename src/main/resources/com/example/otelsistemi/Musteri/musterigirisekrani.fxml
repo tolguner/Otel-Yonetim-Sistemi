@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controllers.Musteri.MusteriGirisController">
+    <BorderPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <!-- Sağ Panel -->
+        <center>
+            <VBox alignment="TOP_CENTER" style="-fx-background-color: #ecf0f1;">
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="800.0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #2c3e50; -fx-background-radius: 0 0 20 20;" text="bOOking+" textAlignment="CENTER">
+                </Label>
+
+                <VBox alignment="CENTER" prefHeight="421.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: #ecf0f1;                            -fx-padding: 40px;">
+
+                    <Label alignment="CENTER" style="-fx-font-size: 24px;                                -fx-font-weight: bold;                                -fx-text-fill: #3498db;" text="MÜŞTERİ GİRİŞİ" textAlignment="CENTER">
+                        <VBox.margin>
+                            <Insets top="15.0" />
+                        </VBox.margin>
+                    </Label>
+
+                    <!-- Kimlik Numarası -->
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label style="-fx-text-fill: #34495e;" text="T.C. Kimlik Numarası" />
+                        <TextField fx:id="txtKimlikNo" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 10;" />
+                    </HBox>
+
+                    <!-- Şifre -->
+                    <HBox alignment="CENTER" spacing="10.0">
+                        <Label prefHeight="17.0" prefWidth="108.0" style="-fx-text-fill: #34495e;" text="Şifre" />
+                        <PasswordField fx:id="txtSifre" prefWidth="200.0" style="-fx-background-radius: 10;" />
+                    </HBox>
+
+                    <!-- Hata mesajı -->
+                    <HBox alignment="CENTER" prefHeight="25.0" prefWidth="720.0">
+                        <Label fx:id="lblHata" alignment="CENTER" contentDisplay="CENTER" 
+                               prefHeight="17.0" prefWidth="389.0" textAlignment="CENTER" textFill="#ff1616" />
+                    </HBox>
+
+                    <!-- Giriş Butonu -->
+                    <Button fx:id="btnGirisYap" onAction="#btngirisyap" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #34495e;                                -fx-text-fill: white;                                -fx-font-weight: bold;                                -fx-background-radius: 20;" text="Giriş Yap">
+                        <VBox.margin>
+                            <Insets />
+                        </VBox.margin>
+                    </Button>
+
+                    <!-- Alt Butonlar -->
+                    <HBox alignment="CENTER" prefHeight="31.0" prefWidth="720.0" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="30.0">
+                            <Button fx:id="btnGeriDon" onAction="#btngeridon" alignment="CENTER" prefHeight="25.0" prefWidth="35.0"
+                                    style="-fx-background-color: #34495e;                                    -fx-text-fill: white;                                    -fx-background-radius: 20;"
+                                    text="&lt;"/>
+                        </HBox>
+                  <HBox prefHeight="25.0" prefWidth="190.0" />
+
+                        <Button fx:id="btnKaydol" onAction="#btnkaydol" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #34495e;                                    -fx-text-fill: white;                                    -fx-background-radius: 20;" text="Kaydol" />
+                  <Button fx:id="btnSifreUnuttum" onAction="#btnsifreunuttum" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #34495e;                                    -fx-text-fill: white;                                    -fx-background-radius: 20;" text="Şifremi Unuttum" />
+                  <HBox prefHeight="31.0" prefWidth="240.0" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </center>
+    </BorderPane>
+</AnchorPane>

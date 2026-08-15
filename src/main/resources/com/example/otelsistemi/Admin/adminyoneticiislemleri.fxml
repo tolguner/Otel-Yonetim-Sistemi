@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controllers.Admin.AdminYoneticiIslemleriController">
+    <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <!-- Sağ Panel -->
+        <center>
+            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ecf0f1;">
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="800.0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #2c3e50; -fx-background-radius: 0 0 20 0;" text="bOOking+" textAlignment="CENTER">
+                </Label>
+                <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="427.0" prefWidth="800.0">
+                    <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="419.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 0 0 20 0;">
+                        <Label alignment="TOP_CENTER" prefHeight="18.0" prefWidth="239.0" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="YÖNETİCİ İŞLEMLERİ" textAlignment="CENTER" textFill="white" wrapText="true">
+                            <VBox.margin>
+                                <Insets top="-20.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <TextField fx:id="tcNoField" maxWidth="200.0" prefHeight="25.0" prefWidth="200.0" promptText="T.C. Kimlik No" />
+                        <TextField fx:id="adField" maxWidth="200.0" prefHeight="25.0" prefWidth="200.0" promptText="Adı" />
+                        <TextField fx:id="soyadField" maxWidth="200.0" prefHeight="25.0" prefWidth="200.0" promptText="Soyadı" />
+                        <TextField fx:id="emailField" maxWidth="200.0" prefHeight="25.0" prefWidth="200.0" promptText="Email" />
+                        <TextField fx:id="telefonField" maxWidth="200.0" prefHeight="25.0" prefWidth="200.0" promptText="Telefon" />
+                        <PasswordField fx:id="sifreField" maxWidth="200.0" prefHeight="25.0" prefWidth="200.0" promptText="Şifre" />
+
+                        <HBox alignment="CENTER" spacing="10">
+                            <Button fx:id="btnGuncelle" onAction="#yoneticiGuncelle" prefHeight="25.0" prefWidth="95.0" 
+                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                                    text="Güncelle" />
+
+                            <Button fx:id="btnSil" onAction="#yoneticiSil" prefHeight="25.0" prefWidth="95.0" 
+                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                                    text="Sil" />
+                        </HBox>
+
+                        <HBox alignment="CENTER" spacing="10">
+                            <Button fx:id="btnGeriDon" onAction="#geriDon" prefHeight="25.0" prefWidth="33.0" 
+                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                                    text="&lt;" />
+
+                            <Button fx:id="btnEkle" onAction="#yoneticiEkle" prefHeight="25.0" prefWidth="160.0" 
+                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                                    text="Ekle" />
+                        </HBox>
+                    </VBox>
+
+                    <TableView fx:id="yoneticiTablo" fixedCellSize="0.0" 
+                            maxHeight="1.7976931348623157E308" 
+                            maxWidth="1.7976931348623157E308" 
+                            prefHeight="419.0" 
+                            prefWidth="621.0" 
+                            style="-fx-background-color: white;
+                                   -fx-background-radius: 10;
+                                   -fx-border-color: #bdc3c7;
+                                   -fx-border-radius: 10;
+                                   -fx-border-width: 1;
+                                   -fx-font-family: 'Segoe UI';
+                                   -fx-font-size: 14px;">
+                        <columns>
+                            <TableColumn fx:id="adColumn" prefWidth="120.0" text="Adı" 
+                                    style="-fx-background-color: #3498db;
+                                           -fx-text-fill: white;
+                                           -fx-alignment: CENTER;
+                                           -fx-font-weight: bold;">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="ad" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="soyadColumn" prefWidth="120.0" text="Soyadı" 
+                                    style="-fx-background-color: #3498db;
+                                           -fx-text-fill: white;
+                                           -fx-alignment: CENTER;
+                                           -fx-font-weight: bold;">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="soyad" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="tcNoColumn" prefWidth="150.0" text="T.C. Kimlik Numarası" 
+                                    style="-fx-background-color: #3498db;
+                                           -fx-text-fill: white;
+                                           -fx-alignment: CENTER;
+                                           -fx-font-weight: bold;">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="tcKimlikNo" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="telefonColumn" prefWidth="120.0" text="Telefon Numarası" 
+                                    style="-fx-background-color: #3498db;
+                                           -fx-text-fill: white;
+                                           -fx-alignment: CENTER;
+                                           -fx-font-weight: bold;">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="telefon" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="emailColumn" prefWidth="120.0" text="Mail" 
+                                    style="-fx-background-color: #3498db;
+                                           -fx-text-fill: white;
+                                           -fx-alignment: CENTER;
+                                           -fx-font-weight: bold;">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="email" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="sifreColumn" prefWidth="120.0" text="Şifre" 
+                                    style="-fx-background-color: #3498db;
+                                           -fx-text-fill: white;
+                                           -fx-alignment: CENTER;
+                                           -fx-font-weight: bold;">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="sifre" />
+                                </cellValueFactory>
+                            </TableColumn>
+                        </columns>
+                        <style>
+                            /* Tablo başlıkları için stil */
+                            -fx-table-header-background: #3498db;
+                            -fx-table-header-text-fill: white;
+                            
+                            /* Satır stilleri */
+                            -fx-table-cell-border-color: #bdc3c7;
+                            -fx-alternate-row-fill: #f7f9fa;
+                            
+                            /* Seçili satır stili */
+                            -fx-selection-bar: #3498db30;
+                            -fx-selection-bar-text-fill: #2c3e50;
+                            
+                            /* Hücre stilleri */
+                            -fx-table-cell-alignment: center;
+                            
+                            /* Izgara çizgileri */
+                            -fx-table-cell-border-color: #bdc3c7;
+                            -fx-grid-lines-visible: true;
+                        </style>
+                    </TableView>
+                </HBox>
+            </VBox>
+        </center>
+    </BorderPane>
+</AnchorPane>
