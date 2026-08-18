@@ -44,7 +44,14 @@ Katmanlı yapı kullanılır:
 ## Kurulum
 
 1. MySQL'de veritabanını oluşturun.
-2. `DBConnection.java` içindeki bağlantı bilgilerini kendi ortamınıza göre güncelleyin.
+2. Bağlantı bilgilerini ortam değişkenleriyle verin (varsayılan: `root` / `123456` / `localhost:3306/rezervasyonotomasyonu`):
+
+```bash
+export DB_URL="jdbc:mysql://localhost:3306/rezervasyonotomasyonu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+export DB_USER="root"
+export DB_PASSWORD="şifreniz"
+```
+
 3. Uygulamayı çalıştırın:
 
 ```bash
