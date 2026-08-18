@@ -191,29 +191,43 @@ public class RezervasyonDAO {
             conn = DBConnection.getConnection();
             conn.setAutoCommit(false);  // Transaction başlat
             
-            // Önce rezervasyon tutarını al
-            String sqlTutar = "SELECT toplamTutar, tcKimlikNo FROM Rezervasyon WHERE rezervasyonId = ?";
+            // Önce rezervasyonun mevcut durumunu ve tutarını al
+            String sqlTutar = "SELECT toplamTutar, tcKimlikNo, durum FROM Rezervasyon WHERE rezervasyonId = ?";
             double iadeTutari = 0;
             String tcKimlikNo = "";
-            
+            String mevcutDurum = null;
+
             try (PreparedStatement pstmt = conn.prepareStatement(sqlTutar)) {
                 pstmt.setInt(1, rezervasyonId);
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
                     iadeTutari = rs.getDouble("toplamTutar");
                     tcKimlikNo = rs.getString("tcKimlikNo");
+                    mevcutDurum = rs.getString("durum");
                 }
             }
-            
-            String sqlIptal = "UPDATE Rezervasyon SET durum = 'IPTAL' WHERE rezervasyonId = ?";
+
+            // Rezervasyon bulunamadıysa ya da zaten iptal edilmişse tekrar iade yapma
+            if (mevcutDurum == null || "IPTAL".equals(mevcutDurum)) {
+                conn.rollback();
+                return false;
+            }
+
+            String sqlIptal = "UPDATE Rezervasyon SET durum = 'IPTAL' WHERE rezervasyonId = ? AND durum != 'IPTAL'";
+            int guncellenenSatir;
             try (PreparedStatement pstmt = conn.prepareStatement(sqlIptal)) {
                 pstmt.setInt(1, rezervasyonId);
-                pstmt.executeUpdate();
+                guncellenenSatir = pstmt.executeUpdate();
             }
-            
+
+            if (guncellenenSatir == 0) {
+                conn.rollback();
+                return false;
+            }
+
             BakiyeDAO bakiyeDAO = new BakiyeDAO();
             bakiyeDAO.bakiyeGuncelle(tcKimlikNo, iadeTutari, "REZERVASYON_IPTAL_IADESI");
-            
+
             conn.commit();  // Transaction'ı onayla
             return true;
             

@@ -39,6 +39,7 @@ public class MusteriOdaAraController extends baseController {
     
     private OdaDAO odaDAO = new OdaDAO();
     private RezervasyonDAO rezervasyonDAO = new RezervasyonDAO();
+    private BakiyeDAO bakiyeDAO = new BakiyeDAO();
     
     @FXML
     public void initialize() {
@@ -62,8 +63,9 @@ public class MusteriOdaAraController extends baseController {
         Bakiye.getInstance().mevcutBakiyeProperty().addListener((obs, oldVal, newVal) -> {
             lblBakiye.setText(String.format("Mevcut Bakiye: %.2f TL", newVal));
         });
-        
-        Bakiye.getInstance().bakiyeGuncelle();
+
+        Bakiye.getInstance().setTcKimlikNo(Musteri.getAktifMusteri().getTcKimlikNo());
+        Bakiye.getInstance().setMevcutBakiye(bakiyeDAO.bakiyeGetir(Musteri.getAktifMusteri().getTcKimlikNo()));
         
         tblOdalar.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null && dpGirisTarihi.getValue() != null && dpCikisTarihi.getValue() != null) {
@@ -162,20 +164,20 @@ public class MusteriOdaAraController extends baseController {
 
             long gunSayisi = ChronoUnit.DAYS.between(dpGirisTarihi.getValue(), dpCikisTarihi.getValue());
             double toplamTutar = secilenOda.getFiyat() * gunSayisi;
+            String tcKimlikNo = Musteri.getAktifMusteri().getTcKimlikNo();
 
-            BakiyeDAO bakiyeDAO = new BakiyeDAO();
-            
             System.out.println("Toplam tutar: " + toplamTutar);
-            System.out.println("TC: " + Musteri.getAktifMusteri().getTcKimlikNo());
-            
-            if (!bakiyeDAO.bakiyeYeterliMi(Musteri.getAktifMusteri().getTcKimlikNo(), toplamTutar)) {
+            System.out.println("TC: " + tcKimlikNo);
+
+            if (!bakiyeDAO.bakiyeYeterliMi(tcKimlikNo, toplamTutar)) {
                 lblMesaj.setText("Yetersiz bakiye! Gerekli tutar: " + toplamTutar + " TL");
                 return;
             }
 
-            if (Bakiye.getInstance().bakiyeYukle(toplamTutar)) {
+            if (bakiyeDAO.bakiyeGuncelle(tcKimlikNo, -toplamTutar, Bakiye.ISLEM_ODEME)) {
+                Bakiye.getInstance().setMevcutBakiye(bakiyeDAO.bakiyeGetir(tcKimlikNo));
                 Rezervasyon rezervasyon = new Rezervasyon();
-                rezervasyon.setTcKimlikNo(Musteri.getAktifMusteri().getTcKimlikNo());
+                rezervasyon.setTcKimlikNo(tcKimlikNo);
                 rezervasyon.setOdaNo(secilenOda.getOdaNo());
                 rezervasyon.setBaslangicTarihi(dpGirisTarihi.getValue());
                 rezervasyon.setBitisTarihi(dpCikisTarihi.getValue());
@@ -184,7 +186,7 @@ public class MusteriOdaAraController extends baseController {
 
                 System.out.println("Rezervasyon yapılıyor...");
                 boolean sonuc = rezervasyonDAO.rezervasyonEkle(rezervasyon);
-                
+
                 if (sonuc) {
                     // Başarı mesajı göster
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -200,10 +202,13 @@ public class MusteriOdaAraController extends baseController {
                     // Rezervasyonlarım sayfasına yönlendir
                     ilgiliSayfayaGit("/com/example/otelsistemi/Musteri/musterirezervasyonlarim.fxml", btnRezervasyonYap);
                 } else {
-                    // Rezervasyon başarısız olursa bakiyeyi geri yükle
-                    Bakiye.getInstance().bakiyeYukle(toplamTutar);
+                    // Rezervasyon başarısız olursa düşülen tutarı geri yükle
+                    bakiyeDAO.bakiyeGuncelle(tcKimlikNo, toplamTutar, "REZERVASYON_IADESI");
+                    Bakiye.getInstance().setMevcutBakiye(bakiyeDAO.bakiyeGetir(tcKimlikNo));
                     lblMesaj.setText("Rezervasyon oluşturulurken bir hata oluştu!");
                 }
+            } else {
+                lblMesaj.setText("Ödeme sırasında bir hata oluştu!");
             }
         } catch (Exception e) {
             System.err.println("Rezervasyon yapılırken hata: " + e.getMessage());

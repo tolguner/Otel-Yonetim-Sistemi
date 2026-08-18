@@ -25,9 +25,10 @@ public class BakiyeDAO {
         }
     }
 
-    // Bakiye getir
+    // Bakiye getir (en son işlemin toplam bakiyesi)
     public double bakiyeGetir(String tcKimlikNo) {
-        String sql = "SELECT COALESCE(MAX(toplamBakiye), 0) as toplamBakiye FROM Bakiye WHERE tcKimlikNo = ?";
+        String sql = "SELECT COALESCE((SELECT toplamBakiye FROM Bakiye WHERE tcKimlikNo = ? " +
+                     "ORDER BY bakiyeId DESC LIMIT 1), 0) as toplamBakiye";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -49,9 +50,8 @@ public class BakiyeDAO {
     public boolean bakiyeIslemiYap(String tcKimlikNo, String islemTipi, double tutar) {
         String sql = """
             INSERT INTO Bakiye (tcKimlikNo, islemTarihi, islemTipi, tutar, toplamBakiye)
-            VALUES (?, CURDATE(), ?, ?, 
-                   (SELECT COALESCE(MAX(toplamBakiye), 0) + ? 
-                    FROM Bakiye WHERE tcKimlikNo = ?))
+            VALUES (?, CURDATE(), ?, ?,
+                   (SELECT COALESCE((SELECT toplamBakiye FROM Bakiye WHERE tcKimlikNo = ? ORDER BY bakiyeId DESC LIMIT 1), 0) + ?))
         """;
         
         try (Connection conn = DBConnection.getConnection();
@@ -60,9 +60,9 @@ public class BakiyeDAO {
             pstmt.setString(1, tcKimlikNo);
             pstmt.setString(2, islemTipi);
             pstmt.setDouble(3, tutar);
-            pstmt.setDouble(4, tutar);
-            pstmt.setString(5, tcKimlikNo);
-            
+            pstmt.setString(4, tcKimlikNo);
+            pstmt.setDouble(5, tutar);
+
             if (pstmt.executeUpdate() > 0) {
                 return true;
             }
@@ -74,9 +74,11 @@ public class BakiyeDAO {
 
     public double getBakiye(String tcKimlikNo) {
         String sql = """
-            SELECT COALESCE(MAX(toplamBakiye), 0) as bakiye 
-            FROM Bakiye 
+            SELECT toplamBakiye as bakiye
+            FROM Bakiye
             WHERE tcKimlikNo = ?
+            ORDER BY bakiyeId DESC
+            LIMIT 1
         """;
         
         try (Connection conn = DBConnection.getConnection();
@@ -129,16 +131,16 @@ public class BakiyeDAO {
     public boolean bakiyeYukle(String tcKimlikNo, double tutar) {
         String sql = "INSERT INTO Bakiye (tcKimlikNo, islemTarihi, islemTipi, tutar, toplamBakiye) " +
                      "VALUES (?, CURRENT_TIMESTAMP, 'YUKLEME', ?, " +
-                     "(SELECT COALESCE(MAX(toplamBakiye), 0) + ? FROM Bakiye b2 WHERE tcKimlikNo = ?))";
-        
+                     "(SELECT COALESCE((SELECT toplamBakiye FROM Bakiye b2 WHERE tcKimlikNo = ? ORDER BY bakiyeId DESC LIMIT 1), 0) + ?))";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, tcKimlikNo);
             pstmt.setDouble(2, tutar);
-            pstmt.setDouble(3, tutar);
-            pstmt.setString(4, tcKimlikNo);
-            
+            pstmt.setString(3, tcKimlikNo);
+            pstmt.setDouble(4, tutar);
+
             if (pstmt.executeUpdate() > 0) {
                 // İşlem başarılı olduğunda dinleyicileri bilgilendir
                 double yeniBakiye = bakiyeGetir(tcKimlikNo);
@@ -153,22 +155,20 @@ public class BakiyeDAO {
 
     public boolean bakiyeGuncelle(String tcKimlikNo, double tutar, String islemTipi) {
         String sql = """
-            INSERT INTO Bakiye (tcKimlikNo, islemTarihi, islemTipi, tutar, toplamBakiye) 
-            VALUES (?, CURRENT_TIMESTAMP, ?, ?, 
-                (SELECT COALESCE(MAX(toplamBakiye), 0) + ? 
-                 FROM Bakiye b2 
-                 WHERE tcKimlikNo = ?))
+            INSERT INTO Bakiye (tcKimlikNo, islemTarihi, islemTipi, tutar, toplamBakiye)
+            VALUES (?, CURRENT_TIMESTAMP, ?, ?,
+                (SELECT COALESCE((SELECT toplamBakiye FROM Bakiye b2 WHERE tcKimlikNo = ? ORDER BY bakiyeId DESC LIMIT 1), 0) + ?))
         """;
-        
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, tcKimlikNo);
             pstmt.setString(2, islemTipi);
             pstmt.setDouble(3, tutar);
-            pstmt.setDouble(4, tutar);
-            pstmt.setString(5, tcKimlikNo);
-            
+            pstmt.setString(4, tcKimlikNo);
+            pstmt.setDouble(5, tutar);
+
             if (pstmt.executeUpdate() > 0) {
                 // İşlem başarılı olduğunda dinleyicileri bilgilendir
                 double yeniBakiye = bakiyeGetir(tcKimlikNo);

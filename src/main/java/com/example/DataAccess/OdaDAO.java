@@ -114,10 +114,11 @@ public class OdaDAO {
                 WHERE o.kapasite >= ? 
                 AND (? IS NULL OR ? = '' OR o.odaTipi = ?) 
                 AND o.odaNo NOT IN (
-                    SELECT r.odaNo 
-                    FROM Rezervasyon r 
-                    WHERE NOT (
-                        r.bitisTarihi < ? OR 
+                    SELECT r.odaNo
+                    FROM Rezervasyon r
+                    WHERE r.durum != 'IPTAL'
+                    AND NOT (
+                        r.bitisTarihi < ? OR
                         r.baslangicTarihi > ?
                     )
                 )
