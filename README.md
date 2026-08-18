@@ -2,7 +2,7 @@
 
 JavaFX ve MySQL ile geliştirilmiş masaüstü otel rezervasyon ve yönetim uygulaması. Üç ayrı kullanıcı rolü (Admin, Yönetici, Müşteri) için ayrı arayüzler sunar.
 
-**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal ve hizmet talebi güncelleme mantığındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor.
+**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal, hizmet talebi güncelleme ve hizmet yönetimi ekranındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor.
 
 ## Özellikler
 
@@ -44,7 +44,9 @@ Katmanlı yapı kullanılır:
 
 ## Kurulum
 
-1. MySQL'de veritabanını oluşturun.
+1. MySQL'de veritabanını oluşturun. Veritabanını bu depo hazır olmadan önce
+   kurduysanız `sql/migrations/` altındaki betikleri sırayla çalıştırın
+   (eksik `Hizmet.aktif` sütunu gibi şema düzeltmeleri içerir).
 2. Bağlantı bilgilerini ortam değişkenleriyle verin (varsayılan: `root` / `123456` / `localhost:3306/rezervasyonotomasyonu`):
 
 ```bash
