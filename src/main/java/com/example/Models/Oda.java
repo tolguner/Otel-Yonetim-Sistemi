@@ -1,7 +1,6 @@
 package com.example.Models;
 
 public class Oda {
-    private int odaId;
     private int odaNo;
     private String odaAdi;
     private String odaTipi;
@@ -22,9 +21,6 @@ public class Oda {
         this.ozellikler = ozellikler;
     }
 
-    public int getOdaId() { return odaId; }
-    public void setOdaId(int odaId) { this.odaId = odaId; }
-    
     public int getOdaNo() { return odaNo; }
     public void setOdaNo(int odaNo) { this.odaNo = odaNo; }
     
