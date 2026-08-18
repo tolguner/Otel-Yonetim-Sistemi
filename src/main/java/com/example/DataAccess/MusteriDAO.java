@@ -7,16 +7,15 @@ public class MusteriDAO {
     
     // Müşteri girişi kontrolü
     public boolean girisYap(String tcKimlikNo, String sifre) {
-        String sql = "SELECT * FROM Musteri WHERE tcKimlikNo = ? AND sifre = ?";
-        
+        String sql = "SELECT * FROM Musteri WHERE tcKimlikNo = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, tcKimlikNo);
-            pstmt.setString(2, sifre);
             ResultSet rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
+
+            if (rs.next() && PasswordHasher.dogrula(sifre, rs.getString("sifre"))) {
                 Musteri musteri = new Musteri();
                 musteri.setTcKimlikNo(rs.getString("tcKimlikNo"));
                 musteri.setAd(rs.getString("ad"));
@@ -44,11 +43,11 @@ public class MusteriDAO {
             pstmt.setString(3, musteri.getSoyad());
             pstmt.setString(4, musteri.getEmail());
             pstmt.setString(5, musteri.getTelefon());
-            pstmt.setString(6, musteri.getSifre());
-            
+            pstmt.setString(6, PasswordHasher.hashle(musteri.getSifre()));
+
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
-            
+
         } catch (SQLException e) {
             System.err.println("Müşteri eklenirken hata: " + e.getMessage());
             e.printStackTrace();
@@ -120,7 +119,7 @@ public class MusteriDAO {
                 // Bilgiler doğruysa şifreyi güncelle
                 String updateQuery = "UPDATE Musteri SET sifre = ? WHERE tcKimlikNo = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                updateStmt.setString(1, yeniSifre);
+                updateStmt.setString(1, PasswordHasher.hashle(yeniSifre));
                 updateStmt.setString(2, tcKimlikNo);
                 
                 int affectedRows = updateStmt.executeUpdate();
@@ -152,7 +151,7 @@ public class MusteriDAO {
             pstmt.setString(4, telefon);
             
             if (yeniSifre != null) {
-                pstmt.setString(5, yeniSifre);
+                pstmt.setString(5, PasswordHasher.hashle(yeniSifre));
                 pstmt.setString(6, tcKimlikNo);
             } else {
                 pstmt.setString(5, tcKimlikNo);
@@ -178,11 +177,11 @@ public class MusteriDAO {
             pstmt.setString(3, musteri.getSoyad());
             pstmt.setString(4, musteri.getEmail());
             pstmt.setString(5, musteri.getTelefon());
-            pstmt.setString(6, musteri.getSifre());
-            
+            pstmt.setString(6, PasswordHasher.hashle(musteri.getSifre()));
+
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
-            
+
         } catch (SQLException e) {
             System.err.println("Müşteri kaydı sırasında hata: " + e.getMessage());
             e.printStackTrace();
@@ -241,16 +240,15 @@ public class MusteriDAO {
     }
     
     public boolean girisKontrol(String tcKimlikNo, String sifre) {
-        String sql = "SELECT COUNT(*) FROM Musteri WHERE tcKimlikNo = ? AND sifre = ?";
+        String sql = "SELECT sifre FROM Musteri WHERE tcKimlikNo = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, tcKimlikNo);
-            pstmt.setString(2, sifre);
             ResultSet rs = pstmt.executeQuery();
-            
+
             if (rs.next()) {
-                return rs.getInt(1) > 0;
+                return PasswordHasher.dogrula(sifre, rs.getString("sifre"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

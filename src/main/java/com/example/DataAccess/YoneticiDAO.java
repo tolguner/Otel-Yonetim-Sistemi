@@ -46,18 +46,27 @@ public class YoneticiDAO {
     }
     
     public boolean yoneticiGuncelle(Yonetici yonetici) {
-        String sql = "UPDATE Yonetici SET ad = ?, soyad = ?, email = ?, telefon = ?, sifre = ? WHERE tcKimlikNo = ?";
-        
+        // Şifre boş/null gönderilmişse mevcut şifre korunur (yanlışlıkla silinmesin diye)
+        boolean sifreDegisecek = yonetici.getSifre() != null && !yonetici.getSifre().isEmpty();
+        String sql = sifreDegisecek
+            ? "UPDATE Yonetici SET ad = ?, soyad = ?, email = ?, telefon = ?, sifre = ? WHERE tcKimlikNo = ?"
+            : "UPDATE Yonetici SET ad = ?, soyad = ?, email = ?, telefon = ? WHERE tcKimlikNo = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, yonetici.getAd());
             pstmt.setString(2, yonetici.getSoyad());
             pstmt.setString(3, yonetici.getEmail());
             pstmt.setString(4, yonetici.getTelefon());
-            pstmt.setString(5, yonetici.getSifre());
-            pstmt.setString(6, yonetici.getTcKimlikNo());
-            
+
+            if (sifreDegisecek) {
+                pstmt.setString(5, PasswordHasher.hashle(yonetici.getSifre()));
+                pstmt.setString(6, yonetici.getTcKimlikNo());
+            } else {
+                pstmt.setString(5, yonetici.getTcKimlikNo());
+            }
+
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,26 +85,25 @@ public class YoneticiDAO {
              pstmt.setString(3, yonetici.getSoyad());
              pstmt.setString(4, yonetici.getEmail());
              pstmt.setString(5, yonetici.getTelefon());
-             pstmt.setString(6, yonetici.getSifre());
-             
+             pstmt.setString(6, PasswordHasher.hashle(yonetici.getSifre()));
+
              return pstmt.executeUpdate() > 0;
          } catch (SQLException e) {
              e.printStackTrace();
              return false;
          }
     }
-    
+
     public static boolean girisYap(String tcKimlikNo, String sifre) {
-        String sql = "SELECT * FROM Yonetici WHERE tcKimlikNo = ? AND sifre = ?";
-        
+        String sql = "SELECT * FROM Yonetici WHERE tcKimlikNo = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-             
+
              pstmt.setString(1, tcKimlikNo);
-             pstmt.setString(2, sifre);
              ResultSet rs = pstmt.executeQuery();
-             
-             if (rs.next()) {
+
+             if (rs.next() && PasswordHasher.dogrula(sifre, rs.getString("sifre"))) {
                  Yonetici yonetici = new Yonetici();
                  yonetici.setTcKimlikNo(rs.getString("tcKimlikNo"));
                  yonetici.setAd(rs.getString("ad"));
@@ -132,31 +140,30 @@ public class YoneticiDAO {
     
     public static boolean sifreGuncelle(String tcKimlikNo, String yeniSifre) {
         String sql = "UPDATE Yonetici SET sifre = ? WHERE tcKimlikNo = ?";
-        
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-             
-             pstmt.setString(1, yeniSifre);
+
+             pstmt.setString(1, PasswordHasher.hashle(yeniSifre));
              pstmt.setString(2, tcKimlikNo);
-             
+
              return pstmt.executeUpdate() > 0;
          } catch (SQLException e) {
              e.printStackTrace();
              return false;
          }
     }
-    
+
     public boolean yoneticiGiris(String tcKimlikNo, String sifre) {
-        String sql = "SELECT * FROM Yonetici WHERE tcKimlikNo = ? AND sifre = ?";
-        
+        String sql = "SELECT sifre FROM Yonetici WHERE tcKimlikNo = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, tcKimlikNo);
-            pstmt.setString(2, sifre);
-            
+
             ResultSet rs = pstmt.executeQuery();
-            return rs.next();
+            return rs.next() && PasswordHasher.dogrula(sifre, rs.getString("sifre"));
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

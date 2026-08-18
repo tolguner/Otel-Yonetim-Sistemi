@@ -4,6 +4,7 @@ module com.example.otelsistemi {
     requires transitive javafx.graphics;
     requires java.sql;
     requires java.base;
+    requires jbcrypt;
 
     opens com.example.Application to javafx.fxml;
     opens com.example.Controllers to javafx.fxml;

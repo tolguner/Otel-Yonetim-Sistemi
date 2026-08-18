@@ -9,16 +9,15 @@ import javafx.collections.ObservableList;
 public class AdminDAO {
     
     public boolean girisYap(String tcKimlikNo, String sifre) {
-        String sql = "SELECT * FROM Admin WHERE tcKimlikNo = ? AND sifre = ?";
-        
+        String sql = "SELECT * FROM Admin WHERE tcKimlikNo = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, tcKimlikNo);
-            pstmt.setString(2, sifre);
             ResultSet rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
+
+            if (rs.next() && PasswordHasher.dogrula(sifre, rs.getString("sifre"))) {
                 Admin admin = new Admin();
                 admin.setTcKimlikNo(rs.getString("tcKimlikNo"));
                 admin.setAd(rs.getString("ad"));
@@ -44,28 +43,28 @@ public class AdminDAO {
             pstmt.setString(2, admin.getSoyad());
             pstmt.setString(3, admin.getEmail());
             pstmt.setString(4, admin.getTelefon());
-            pstmt.setString(5, admin.getSifre());
+            pstmt.setString(5, PasswordHasher.hashle(admin.getSifre()));
             pstmt.setString(6, admin.getTcKimlikNo());
-            
+
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-    
+
     public boolean adminEkle(Admin admin) {
         String sql = "INSERT INTO Admin (tcKimlikNo, ad, soyad, email, telefon, sifre) VALUES (?, ?, ?, ?, ?, ?)";
-        
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, admin.getTcKimlikNo());
             pstmt.setString(2, admin.getAd());
             pstmt.setString(3, admin.getSoyad());
             pstmt.setString(4, admin.getEmail());
             pstmt.setString(5, admin.getTelefon());
-            pstmt.setString(6, admin.getSifre());
+            pstmt.setString(6, PasswordHasher.hashle(admin.getSifre()));
             
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -121,11 +120,11 @@ public class AdminDAO {
 
     public static boolean sifreSifirla(String tcKimlikNo, String yeniSifre) {
         String sql = "UPDATE Admin SET sifre = ? WHERE tcKimlikNo = ?";
-        
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, yeniSifre);
+
+            pstmt.setString(1, PasswordHasher.hashle(yeniSifre));
             pstmt.setString(2, tcKimlikNo);
             
             return pstmt.executeUpdate() > 0;
@@ -154,11 +153,11 @@ public class AdminDAO {
 
     public static boolean sifreGuncelle(String email, String yeniSifre) {
         String sql = "UPDATE Admin SET sifre = ? WHERE email = ?";
-        
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, yeniSifre);
+
+            pstmt.setString(1, PasswordHasher.hashle(yeniSifre));
             pstmt.setString(2, email);
             
             return pstmt.executeUpdate() > 0;
