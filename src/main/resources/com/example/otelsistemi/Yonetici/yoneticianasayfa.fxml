@@ -31,14 +31,23 @@
                             text="Hizmet Talebi İşlemleri" />
                <Button fx:id="btnodaislemleri" prefWidth="200" style="-fx-background-color: #34495e;                            -fx-text-fill: white;                            -fx-font-weight: bold;                            -fx-background-radius: 20;" text="Oda İşlemleri" onAction="#goodaislemleri" />
 
-                    <Button fx:id="btnHizmetIslemleri" 
-                            prefWidth="200" 
+                    <Button fx:id="btnHizmetIslemleri"
+                            prefWidth="200"
                             style="-fx-background-color: #34495e;
                                    -fx-text-fill: white;
                                    -fx-font-weight: bold;
                                    -fx-background-radius: 20;"
-                            text="Hizmet İşlemleri" 
+                            text="Hizmet İşlemleri"
                             onAction="#goHizmetIslemleri"/>
+
+                    <Button fx:id="btnMusteriIslemleri"
+                            prefWidth="200"
+                            style="-fx-background-color: #34495e;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-background-radius: 20;"
+                            text="Müşteri İşlemleri"
+                            onAction="#goMusteriIslemleri"/>
 
                     <Button fx:id="btncikisyap" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #34495e;                            -fx-text-fill: white;                            -fx-font-weight: bold;                            -fx-background-radius: 20;" text="Çıkış Yap" onAction="#gocikisyap">
                         <VBox.margin>

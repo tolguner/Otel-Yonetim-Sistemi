@@ -23,6 +23,9 @@ public class yoneticiAnasayfaController extends baseController {
     private Button btnHizmetIslemleri;
 
     @FXML
+    private Button btnMusteriIslemleri;
+
+    @FXML
     public void goprofilim() {
         ilgiliSayfayaGit("/com/example/otelsistemi/Yonetici/yoneticiprofilim.fxml", btnprofilim);
     }
@@ -46,5 +49,10 @@ public class yoneticiAnasayfaController extends baseController {
     @FXML
     private void goHizmetIslemleri() {
         ilgiliSayfayaGit("/com/example/otelsistemi/Yonetici/YoneticiHizmetIslemleri.fxml", btnHizmetIslemleri);
+    }
+
+    @FXML
+    private void goMusteriIslemleri() {
+        ilgiliSayfayaGit("/com/example/otelsistemi/Yonetici/yoneticimusteriislemleri.fxml", btnMusteriIslemleri);
     }
 } 

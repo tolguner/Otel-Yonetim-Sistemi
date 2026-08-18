@@ -2,7 +2,7 @@
 
 JavaFX ve MySQL ile geliştirilmiş masaüstü otel rezervasyon ve yönetim uygulaması. Üç ayrı kullanıcı rolü (Admin, Yönetici, Müşteri) için ayrı arayüzler sunar.
 
-**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal, hizmet talebi güncelleme ve hizmet yönetimi ekranındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor.
+**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal, hizmet talebi güncelleme ve hizmet yönetimi ekranındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor, arayüz ekranları arasındaki görsel tutarsızlıklar giderildi ve yarım bırakılmış "Müşteri İşlemleri" ekranı tamamlandı.
 
 ## Özellikler
 
@@ -65,8 +65,6 @@ export DB_PASSWORD="şifreniz"
 
 - "Şifremi unuttum" akışları (Müşteri/Yönetici/Admin) TC-e-posta-telefon eşleşmesini
   kontrol ediyor ama gerçek bir doğrulama kodu/e-posta gönderimi yok.
-- Arayüz bu oturumda görsel olarak (javafx:run ile) çalıştırılıp test edilmedi;
-  değişiklikler DAO katmanında gerçek MySQL veritabanına karşı JUnit testleriyle doğrulandı.
 
 ## Gereksinimler
 

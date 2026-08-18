@@ -1,9 +1,50 @@
 package com.example.DataAccess;
 
 import com.example.Models.Musteri;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.sql.*;
 
 public class MusteriDAO {
+
+    public ObservableList<Musteri> tumMusterileriGetir() {
+        ObservableList<Musteri> musteriler = FXCollections.observableArrayList();
+        String sql = "SELECT tcKimlikNo, ad, soyad, email, telefon FROM Musteri";
+
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Musteri musteri = new Musteri();
+                musteri.setTcKimlikNo(rs.getString("tcKimlikNo"));
+                musteri.setAd(rs.getString("ad"));
+                musteri.setSoyad(rs.getString("soyad"));
+                musteri.setEmail(rs.getString("email"));
+                musteri.setTelefon(rs.getString("telefon"));
+                musteriler.add(musteri);
+            }
+        } catch (SQLException e) {
+            System.err.println("Müşteriler getirilirken hata: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return musteriler;
+    }
+
+    public boolean musteriSil(String tcKimlikNo) {
+        String sql = "DELETE FROM Musteri WHERE tcKimlikNo = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, tcKimlikNo);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Müşteri silinirken hata: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
     
     // Müşteri girişi kontrolü
     public boolean girisYap(String tcKimlikNo, String sifre) {
