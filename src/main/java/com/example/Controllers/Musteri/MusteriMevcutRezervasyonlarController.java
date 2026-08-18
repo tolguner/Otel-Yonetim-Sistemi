@@ -184,11 +184,31 @@ public class MusteriMevcutRezervasyonlarController extends baseController {
     @FXML
     private void hizmetTalebiGuncelle() {
         if (mevcutTalep == null) return;
-        
-        mevcutTalep.setHizmetAdi(cmbHizmetler.getValue());
-        mevcutTalep.setAciklama(txtAciklama.getText().trim());
-        
-        if (hizmetTalebiDAO.talepGuncelle(mevcutTalep)) {
+
+        String yeniHizmet = cmbHizmetler.getValue();
+        if (yeniHizmet == null || yeniHizmet.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Uyarı", "Lütfen bir hizmet seçiniz!");
+            return;
+        }
+
+        double yeniUcret = hizmetTalebiDAO.getHizmetUcreti(yeniHizmet);
+        double eskiUcret = mevcutTalep.getFiyat();
+        double fark = yeniUcret - eskiUcret;
+
+        if (fark > 0) {
+            double mevcutBakiye = bakiyeDAO.bakiyeGetir(Musteri.getAktifMusteri().getTcKimlikNo());
+            if (mevcutBakiye < fark) {
+                showAlert(Alert.AlertType.WARNING, "Uyarı",
+                        String.format("Bakiyeniz yetersiz! Ek ücret: %.2f TL, Bakiyeniz: %.2f TL", fark, mevcutBakiye));
+                return;
+            }
+        }
+
+        String yeniAciklama = txtAciklama.getText().trim();
+
+        if (hizmetTalebiDAO.talepGuncelle(mevcutTalep.getTalepId(), yeniHizmet, yeniAciklama,
+                eskiUcret, Musteri.getAktifMusteri().getTcKimlikNo())) {
+            bakiyeyiGuncelle();
             showAlert(Alert.AlertType.INFORMATION, "Başarılı", "Hizmet talebi güncellendi!");
             rezervasyonlariYukle();
             hizmetTalebiniYukle(seciliRezervasyon.getRezervasyonId());

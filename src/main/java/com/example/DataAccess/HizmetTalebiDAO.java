@@ -167,6 +167,8 @@ public class HizmetTalebiDAO {
                 talep.setHizmetAdi(rs.getString("hizmetAdi"));
                 talep.setAciklama(rs.getString("aciklama"));
                 talep.setDurum(rs.getString("durum"));
+                talep.setFiyat(rs.getDouble("fiyat"));
+                talep.setOdaNo(rs.getInt("odaNo"));
                 return talep;
             }
         } catch (SQLException e) {
@@ -175,21 +177,71 @@ public class HizmetTalebiDAO {
         return null;
     }
 
-    public boolean talepGuncelle(HizmetTalebi talep) {
-        String sql = "UPDATE HizmetTalebi SET hizmetAdi = ?, aciklama = ? WHERE talepId = ?";
-        
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, talep.getHizmetAdi());
-            pstmt.setString(2, talep.getAciklama());
-            pstmt.setInt(3, talep.getTalepId());
-            
-            return pstmt.executeUpdate() > 0;
+    /**
+     * Hizmet talebini günceller (hizmet türü değişmiş olabilir). Yeni/eski fiyat
+     * farkı varsa müşterinin bakiyesinden düşülür veya iade edilir.
+     */
+    public boolean talepGuncelle(int talepId, String yeniHizmetAdi, String yeniAciklama,
+                                  double eskiFiyat, String tcKimlikNo) {
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            int hizmetId = 0;
+            double yeniFiyat = 0;
+            try (PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT hizmetId, fiyat FROM Hizmet WHERE hizmetAdi = ?")) {
+                pstmt.setString(1, yeniHizmetAdi);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    hizmetId = rs.getInt("hizmetId");
+                    yeniFiyat = rs.getDouble("fiyat");
+                } else {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE HizmetTalebi SET hizmetId = ?, aciklama = ?, fiyat = ? WHERE talepId = ?")) {
+                pstmt.setInt(1, hizmetId);
+                pstmt.setString(2, yeniAciklama);
+                pstmt.setDouble(3, yeniFiyat);
+                pstmt.setInt(4, talepId);
+                if (pstmt.executeUpdate() == 0) {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            double fark = yeniFiyat - eskiFiyat;
+            if (fark != 0) {
+                BakiyeDAO bakiyeDAO = new BakiyeDAO();
+                bakiyeDAO.bakiyeGuncelle(tcKimlikNo, -fark,
+                        fark > 0 ? "HIZMET_ODEMESI" : "HIZMET_IADESI");
+            }
+
+            conn.commit();
+            return true;
         } catch (SQLException e) {
+            try {
+                if (conn != null) conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return false;
     }
 
     public boolean talepSil(int talepId) {
