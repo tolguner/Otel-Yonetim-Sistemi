@@ -2,7 +2,7 @@
 
 JavaFX ve MySQL ile geliştirilmiş masaüstü otel rezervasyon ve yönetim uygulaması. Üç ayrı kullanıcı rolü (Admin, Yönetici, Müşteri) için ayrı arayüzler sunar.
 
-**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal, hizmet talebi güncelleme ve hizmet yönetimi ekranındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor, arayüz ekranları arasındaki görsel tutarsızlıklar giderildi ve yarım bırakılmış "Müşteri İşlemleri" ekranı tamamlandı.
+**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal, hizmet talebi güncelleme ve hizmet yönetimi ekranındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor, arayüz ekranları arasındaki görsel tutarsızlıklar giderildi, yarım bırakılmış "Müşteri İşlemleri" ekranı tamamlandı ve kritik para akışları JUnit testleriyle güvence altına alındı.
 
 ## Özellikler
 
@@ -60,6 +60,18 @@ export DB_PASSWORD="şifreniz"
 ```bash
 ./mvnw clean javafx:run
 ```
+
+## Test
+
+```bash
+./mvnw test
+```
+
+`PasswordHasherTest` saf birim testidir (veritabanı gerekmez).
+`RezervasyonBakiyeEntegrasyonTest` bakiye/rezervasyon/hizmet talebi
+para akışını gerçek bir MySQL bağlantısına karşı doğrular (2. maddedeki
+ortam değişkenleri gerekir); kendi test verisini oluşturur ve her
+testten sonra temizler, mevcut verilere dokunmaz.
 
 ## Bilinen kısıtlar
 
