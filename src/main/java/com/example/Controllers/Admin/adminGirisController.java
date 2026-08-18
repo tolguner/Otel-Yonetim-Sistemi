@@ -51,7 +51,6 @@ public class adminGirisController extends baseController {
         // Detaylı log
         System.out.println("===== Giriş İşlemi =====");
         System.out.println("TC Kimlik No: " + giristcKimlikNumarasi);
-        System.out.println("Şifre: " + girissifre);
 
         // Boş alan kontrolü
         if (giristcKimlikNumarasi.isEmpty() || girissifre.isEmpty()) {

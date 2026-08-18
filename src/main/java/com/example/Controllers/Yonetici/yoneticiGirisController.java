@@ -47,7 +47,6 @@ public class yoneticiGirisController extends baseController {
 
         System.out.println("===== Giriş İşlemi =====");
         System.out.println("TC Kimlik No: " + tcKimlikNo);
-        System.out.println("Şifre: " + sifre);
 
         if (yoneticiDAO.yoneticiGiris(tcKimlikNo, sifre)) {
             System.out.println("Giriş başarılı, yönetici bilgileri alınıyor...");
