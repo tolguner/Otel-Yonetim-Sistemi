@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controllers.Admin.AdminYoneticiIslemleriController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controllers.Admin.AdminYoneticiIslemleriController">
     <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
         <!-- Sağ Panel -->
         <center>
             <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ecf0f1;">
-                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="800.0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #2c3e50; -fx-background-radius: 0 0 20 0;" text="bOOking+" textAlignment="CENTER">
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="800.0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #2c3e50; -fx-background-radius: 0 0 20 20;" text="bOOking+" textAlignment="CENTER">
                 </Label>
                 <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="427.0" prefWidth="800.0">
                     <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="419.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 0 0 20 0;">
@@ -37,22 +37,22 @@
                         <PasswordField fx:id="sifreField" maxWidth="200.0" prefHeight="25.0" prefWidth="200.0" promptText="Şifre" />
 
                         <HBox alignment="CENTER" spacing="10">
-                            <Button fx:id="btnGuncelle" onAction="#yoneticiGuncelle" prefHeight="25.0" prefWidth="95.0" 
-                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                            <Button fx:id="btnGuncelle" onAction="#yoneticiGuncelle" prefHeight="25.0" prefWidth="95.0"
+                                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"
                                     text="Güncelle" />
 
-                            <Button fx:id="btnSil" onAction="#yoneticiSil" prefHeight="25.0" prefWidth="95.0" 
-                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                            <Button fx:id="btnSil" onAction="#yoneticiSil" prefHeight="25.0" prefWidth="95.0"
+                                    style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"
                                     text="Sil" />
                         </HBox>
 
                         <HBox alignment="CENTER" spacing="10">
-                            <Button fx:id="btnGeriDon" onAction="#geriDon" prefHeight="25.0" prefWidth="33.0" 
-                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                            <Button fx:id="btnGeriDon" onAction="#geriDon" prefHeight="25.0" prefWidth="33.0"
+                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"
                                     text="&lt;" />
 
-                            <Button fx:id="btnEkle" onAction="#yoneticiEkle" prefHeight="25.0" prefWidth="160.0" 
-                                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" 
+                            <Button fx:id="btnEkle" onAction="#yoneticiEkle" prefHeight="25.0" prefWidth="160.0"
+                                    style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"
                                     text="Ekle" />
                         </HBox>
                     </VBox>

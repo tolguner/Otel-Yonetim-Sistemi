@@ -60,7 +60,7 @@
                         </HBox>
                   <HBox prefHeight="25.0" prefWidth="190.0" />
 
-                        <Button fx:id="btnKaydol" onAction="#btnkaydol" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #34495e;                                    -fx-text-fill: white;                                    -fx-background-radius: 20;" text="Kaydol" />
+                        <Button fx:id="btnKaydol" onAction="#btnkaydol" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #34495e;                                    -fx-text-fill: white;                                    -fx-background-radius: 20;" text="Kayıt Ol" />
                   <Button fx:id="btnSifreUnuttum" onAction="#btnsifreunuttum" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #34495e;                                    -fx-text-fill: white;                                    -fx-background-radius: 20;" text="Şifremi Unuttum" />
                   <HBox prefHeight="31.0" prefWidth="240.0" />
                     </HBox>
