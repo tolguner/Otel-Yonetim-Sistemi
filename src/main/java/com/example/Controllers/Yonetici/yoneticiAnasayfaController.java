@@ -1,6 +1,7 @@
 package com.example.Controllers.Yonetici;
 
 import com.example.Controllers.baseController;
+import com.example.Models.Yonetici;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -38,6 +39,7 @@ public class yoneticiAnasayfaController extends baseController {
 
     @FXML
     public void gocikisyap() {
+        Yonetici.oturumuKapat();
         ilgiliSayfayaGit("/com/example/otelsistemi/Yonetici/yoneticigirisekrani.fxml", btncikisyap);
     }
 

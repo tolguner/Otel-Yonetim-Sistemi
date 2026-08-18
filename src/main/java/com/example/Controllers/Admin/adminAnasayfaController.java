@@ -1,6 +1,7 @@
 package com.example.Controllers.Admin;
 
 import com.example.Controllers.baseController;
+import com.example.Models.Admin;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -28,6 +29,7 @@ public class adminAnasayfaController extends baseController {
 
     @FXML
     public void gocikisyap(){
+        Admin.oturumuKapat();
         ilgiliSayfayaGit("/com/example/otelsistemi/Admin/admingirisekrani.fxml", btncikisyap);
     }
 }
