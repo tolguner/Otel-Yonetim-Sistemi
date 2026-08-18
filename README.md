@@ -2,7 +2,7 @@
 
 JavaFX ve MySQL ile geliştirilmiş masaüstü otel rezervasyon ve yönetim uygulaması. Üç ayrı kullanıcı rolü (Admin, Yönetici, Müşteri) için ayrı arayüzler sunar.
 
-**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal mantığındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor.
+**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal ve hizmet talebi güncelleme mantığındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor.
 
 ## Özellikler
 
@@ -61,10 +61,6 @@ export DB_PASSWORD="şifreniz"
 
 ## Bilinen kısıtlar
 
-- `OdaDAO` içinde `odaId` sütununa referans veren iki yardımcı metod (`uygunOdalariGetir`,
-  `musaitOdalariGetir(..., Double, Double)`) hiçbir ekrandan çağrılmıyor ve gerçek şemada
-  `odaId` diye bir sütun yok — çağrılırsa hata verir. Kullanılan tek arama metodu
-  `musaitOdalariGetir(LocalDate, LocalDate, String, int)`.
 - "Şifremi unuttum" akışları (Müşteri/Yönetici/Admin) TC-e-posta-telefon eşleşmesini
   kontrol ediyor ama gerçek bir doğrulama kodu/e-posta gönderimi yok.
 - Arayüz bu oturumda görsel olarak (javafx:run ile) çalıştırılıp test edilmedi;
