@@ -41,12 +41,28 @@ Katmanlı yapı kullanılır:
 - `DataAccess/` — her varlık için DAO sınıfları ve `DBConnection`
 - `Controllers/` — her ekran için FXML controller'ı
 - `resources/.../*.fxml` — arayüz tanımları
+- `sql/` — veritabanı şeması (`schema.sql`), örnek veri (`seed.sql`) ve şema güncellemeleri (`migrations/`)
 
 ## Kurulum
 
-1. MySQL'de veritabanını oluşturun. Veritabanını bu depo hazır olmadan önce
-   kurduysanız `sql/migrations/` altındaki betikleri sırayla çalıştırın
-   (eksik `Hizmet.aktif` sütunu gibi şema düzeltmeleri içerir).
+1. Veritabanını ve tablolarını oluşturun. Şema betiği veritabanını (yoksa)
+   ve tüm tabloları oluşturur:
+
+```bash
+mysql -u root -p < sql/schema.sql
+```
+
+   İsteğe bağlı olarak örnek oda ve hizmet verisini yükleyin (arama/hizmet
+   ekranlarının boş görünmemesi için):
+
+```bash
+mysql -u root -p rezervasyonotomasyonu < sql/seed.sql
+```
+
+   Veritabanını bu depo hazır olmadan önce kurduysanız `sql/migrations/`
+   altındaki betikleri sırayla çalıştırın (eksik `Hizmet.aktif` sütunu gibi
+   sonradan eklenen şema düzeltmelerini içerir).
+
 2. Bağlantı bilgilerini ortam değişkenleriyle verin (varsayılan: `root` / `123456` / `localhost:3306/rezervasyonotomasyonu`):
 
 ```bash
