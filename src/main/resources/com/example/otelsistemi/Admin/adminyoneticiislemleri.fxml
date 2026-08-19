@@ -115,15 +115,6 @@
                                     <PropertyValueFactory property="email" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="sifreColumn" prefWidth="120.0" text="Şifre" 
-                                    style="-fx-background-color: #3498db;
-                                           -fx-text-fill: white;
-                                           -fx-alignment: CENTER;
-                                           -fx-font-weight: bold;">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="sifre" />
-                                </cellValueFactory>
-                            </TableColumn>
                         </columns>
                         <style>
                             /* Tablo başlıkları için stil */
