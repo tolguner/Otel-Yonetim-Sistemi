@@ -9,7 +9,10 @@ public class DBConnection {
     private static final String URL = System.getenv().getOrDefault(
             "DB_URL", "jdbc:mysql://localhost:3306/rezervasyonotomasyonu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true");
     private static final String USER = System.getenv().getOrDefault("DB_USER", "root");
-    private static final String PASSWORD = System.getenv().getOrDefault("DB_PASSWORD", "123456");
+
+    // Şifrenin varsayılanı bilinçli olarak yok; kaynak koda şifre gömülmemesi için
+    // yalnızca DB_PASSWORD ortam değişkeninden okunur (bkz. README > Kurulum).
+    private static final String PASSWORD = System.getenv("DB_PASSWORD");
 
 
     static {
@@ -23,6 +26,14 @@ public class DBConnection {
     }
 
     public static Connection getConnection() throws SQLException {
+        if (PASSWORD == null || PASSWORD.isEmpty()) {
+            throw new SQLException(
+                    "DB_PASSWORD ortam değişkeni tanımlı değil. Veritabanı şifrenizi ortam "
+                    + "değişkeni olarak verin (bkz. README > Kurulum). Örnek:\n"
+                    + "  export DB_PASSWORD=\"sifreniz\"      (bash)\n"
+                    + "  $env:DB_PASSWORD = \"sifreniz\"      (PowerShell)");
+        }
+
         try {
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Veritabanı bağlantısı başarılı!");

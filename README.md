@@ -62,7 +62,9 @@ mysql -u root -p rezervasyonotomasyonu < sql/seed.sql
    (`sql/migrations/` altındaki betikler, veritabanını daha eski bir sürümle
    kurmuş olanlar içindir; `schema.sql` bu düzeltmeleri zaten içerir.)
 
-2. Bağlantı bilgilerini ortam değişkenleriyle verin (varsayılan: `root` / `123456` / `localhost:3306/rezervasyonotomasyonu`):
+2. Bağlantı bilgilerini ortam değişkenleriyle verin. Kaynak koda şifre
+   gömülmemesi için `DB_PASSWORD` **zorunludur**; `DB_URL` ve `DB_USER`
+   verilmezse `localhost:3306/rezervasyonotomasyonu` ve `root` varsayılır:
 
 ```bash
 export DB_URL="jdbc:mysql://localhost:3306/rezervasyonotomasyonu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
