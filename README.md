@@ -2,7 +2,7 @@
 
 JavaFX ve MySQL ile geliştirilmiş masaüstü otel rezervasyon ve yönetim uygulaması. Üç ayrı kullanıcı rolü (Admin, Yönetici, Müşteri) için ayrı arayüzler sunar.
 
-**Durum:** Çalışır durumda — temel akışlar tamamlandı. Rezervasyon/bakiye/iptal, hizmet talebi güncelleme ve hizmet yönetimi ekranındaki hatalar giderildi, şifreler artık BCrypt ile hash'leniyor, arayüz ekranları arasındaki görsel tutarsızlıklar giderildi, yarım bırakılmış "Müşteri İşlemleri" ekranı tamamlandı ve kritik para akışları JUnit testleriyle güvence altına alındı.
+**Bilişim Sistemleri İçin Java** dersi kapsamında geliştirilmiş bir dönem projesidir. Amaç, JavaFX ile masaüstü arayüz tasarımı, JDBC üzerinden ilişkisel veritabanı erişimi ve katmanlı mimari (Model–DAO–Controller) uygulamaktır.
 
 ## Özellikler
 
@@ -59,9 +59,8 @@ mysql -u root -p < sql/schema.sql
 mysql -u root -p rezervasyonotomasyonu < sql/seed.sql
 ```
 
-   Veritabanını bu depo hazır olmadan önce kurduysanız `sql/migrations/`
-   altındaki betikleri sırayla çalıştırın (eksik `Hizmet.aktif` sütunu gibi
-   sonradan eklenen şema düzeltmelerini içerir).
+   (`sql/migrations/` altındaki betikler, veritabanını daha eski bir sürümle
+   kurmuş olanlar içindir; `schema.sql` bu düzeltmeleri zaten içerir.)
 
 2. Bağlantı bilgilerini ortam değişkenleriyle verin (varsayılan: `root` / `123456` / `localhost:3306/rezervasyonotomasyonu`):
 
@@ -88,11 +87,6 @@ export DB_PASSWORD="şifreniz"
 para akışını gerçek bir MySQL bağlantısına karşı doğrular (2. maddedeki
 ortam değişkenleri gerekir); kendi test verisini oluşturur ve her
 testten sonra temizler, mevcut verilere dokunmaz.
-
-## Bilinen kısıtlar
-
-- "Şifremi unuttum" akışları (Müşteri/Yönetici/Admin) TC-e-posta-telefon eşleşmesini
-  kontrol ediyor ama gerçek bir doğrulama kodu/e-posta gönderimi yok.
 
 ## Gereksinimler
 
