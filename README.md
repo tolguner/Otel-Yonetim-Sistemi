@@ -95,3 +95,7 @@ testten sonra temizler, mevcut verilere dokunmaz.
 - JDK 17+
 - MySQL 8+
 - Maven (proje ile gelen `mvnw` sarmalayıcısı kullanılabilir)
+
+## Lisans
+
+MIT — bkz. [LICENSE](LICENSE).
